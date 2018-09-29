@@ -46,6 +46,68 @@ nibelungDNN500 %>%
     optimizer = optimizer_rmsprop(lr = learning_rate, decay = 0.01),
     metrics = 'accuracy'
   )
+
+#Training and Evaluation
+#Fit model to data
+nibelungDNN500 %>% fit(
+  x_train, y_train,
+  batch_size = batch_size,
+  epochs= epochs,
+  verbose = 0,
+  view_metrics = TRUE,
+  shuffle = TRUE,
+  validation_split = 0.2,
+  #we must validate the tuple(x_test, y_test),
+  callbacks = list(early_stopping)) -> history
+
+predict(nibelungDNN500, x_test) -> Ypr.test
+Ypr.test %>% max.col() - 1 -> y_pr_test
+evalq(res_mod_test <- Eval(Ytest1, y_pr_state), env)
+#bias
+#require(randomUniformForest)
+import_fun(randomUniformForest, biasVarCov, BiasVar)
+target = env$Ytest1
+bias1 <- BiasVar(predictions = y_pr_test,
+                 target = target,
+                 regression = FALSE, idx=1:length(target))
+#-------model-----test-1---------
+predict(nibelungDNN500, x_test1) -> Ypr.test1
+Ypr.test1 %>% max.col() -1 -> y_pr_test1
+evalq(res_mod_test1 <- Eval(Ytest2, y_pr_test1), env)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 
 
